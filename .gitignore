@@ -1,10 +1,37 @@
 
-# server
+### Common
+
+.DS_Store
+ehthumbs.db
+Icon?
+Thumbs.db
+logs
+*.log
+pids
+*.pid
+*.seed
+
+
+### server
 
 server/node_modules
 server/data/journal
 
 
-# client
+### client
 
 client/node_modules
+client/lib-cov
+client/coverage
+client/build/Release
+client/.lock-wscript
+client/bower_components
+client/coverage/
+client/src/typings/tsd/
+client/typings/
+client/tsd_typings/
+client/dist
+client/public/__build__/
+client/src/*/__build__/
+client/__build__/**
+client/.webpack.json
