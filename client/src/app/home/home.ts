@@ -13,12 +13,20 @@ import {Title} from '../providers/title';
   template: require('./home.html')
 })
 export class Home {
-  // TypeScript public modifiers
-  constructor(public title: Title, public http: Http) {
-  }
+  listUsers: Object[];
+
+  constructor(public title: Title, public http: Http) {  }
 
   ngOnInit() {
     console.log('hello Home');
+
+    this.http.get('http://localhost:8080/api/users').map(res => res.json()).subscribe(
+      list => {
+        this.listUsers = list;
+        console.log('nice');
+      },
+      (err) => console.log('FAIL', err)
+    );
   }
 
 }
