@@ -1,11 +1,19 @@
 <div>
-  Your Content Here
-  <input type="text" [value]="title.value" (input)="title.value = $event.target.value" autofocus>
-  <!--
-    Rather than wiring up two-way data-binding ourselves
-    we can use Angular's [(ngModel)] syntax
-    <input type="text" [(ngModel)]="title.value">
-  -->
+  <br><hr><br>
 
-  <pre>this.title = {{ title | json }}</pre>
+  <h1>TOKEN: {{ current_token }}</h1>
+  <button (click)="auth.deconnect()">DELETE TOKEN</button>
+
+  <br><hr><br>
+
+  <login-form></login-form>
+
+  <br><hr><br>
+
+  <div>
+    <button (click)="retrieveUsers()">GET USERS</button>
+    <ul>
+      <li *ngFor="#user of listUsers">{{ user.name }}</li>
+    </ul>
+  </div>
 </div>

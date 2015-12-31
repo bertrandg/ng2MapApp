@@ -18,6 +18,12 @@ var port = process.env.PORT || 8080; // used to create, sign, and verify tokens
 mongoose.connect(config.database); // connect to database
 app.set('superSecret', config.secret); // secret variable
 
+var allowCrossDomain = function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*');
+    next();
+}
+app.use(allowCrossDomain);
+
 // use body parser so we can get info from POST and/or URL parameters
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -34,8 +40,8 @@ app.get('/setup', function(req, res) {
 
   // create a sample user
   var nick = new User({
-    name: 'Nick Cerminara',
-    password: 'password',
+    name: 'bobby',
+    password: 'bobby',
     admin: true
   });
 
@@ -67,12 +73,12 @@ apiRoutes.post('/authenticate', function(req, res) {
     if (err) throw err;
 
     if (!user) {
-      res.json({ success: false, message: 'Authentication failed. User not found.' });
+      return res.status(422).send({ success: false, message: 'Authentication failed. User not found.' });
     } else if (user) {
 
       // check if password matches
       if (user.password != req.body.password) {
-        res.json({ success: false, message: 'Authentication failed. Wrong password.' });
+        return res.status(422).send({ success: false, message: 'Authentication failed. Wrong password.' });
       } else {
 
         // if user is found and password is right
@@ -85,7 +91,7 @@ apiRoutes.post('/authenticate', function(req, res) {
         res.json({
           success: true,
           message: 'Enjoy your token!',
-          token: token
+          id_token: token
         });
       }
 
@@ -93,10 +99,6 @@ apiRoutes.post('/authenticate', function(req, res) {
 
   });
 });
-
-
-
-
 
 // route middleware to verify a token
 apiRoutes.use(function(req, res, next) {
@@ -110,7 +112,10 @@ apiRoutes.use(function(req, res, next) {
     // verifies secret and checks exp
     jwt.verify(token, app.get('superSecret'), function(err, decoded) {
       if (err) {
-        return res.json({ success: false, message: 'Failed to authenticate token.' });
+        return res.status(403).send({
+            success: false,
+            message: 'Failed to authenticate token.'
+        });
       } else {
         // if everything is good, save to request for use in other routes
         req.decoded = decoded;
@@ -129,10 +134,6 @@ apiRoutes.use(function(req, res, next) {
 
   }
 });
-
-
-
-
 
 
 // route to show a random message (GET http://localhost:8080/api/)

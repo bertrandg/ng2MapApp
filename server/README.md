@@ -15,7 +15,7 @@
 
 - Start env: `PS C:\MongoDB\bin> ./mongod.exe --dbpath C:\wamp\www\ng2MapApp\server\data\`
 
-- Connect: `PS C:\MongoDB\bin> mongo.exe`
+- Connect: `PS C:\MongoDB\bin> ./mongo.exe`
 - Create db: `use appmapdb`
 - Insert: `db.usercollection.insert({ "username" : "testuser1", "email" : "testuser1@testdomain.com" })`
 - Display: `db.usercollection.find().pretty()`
@@ -27,3 +27,9 @@
 
 - `node server.js`
 - OR `nodemon server.js` (+ `npm install -g nodemon`)
+
+
+
+
+
+SERVER URL: [http://localhost:8080/](http://localhost:8080/)

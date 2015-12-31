@@ -1,31 +1,37 @@
 import {Component} from 'angular2/core';
-import {FORM_DIRECTIVES} from 'angular2/common';
-import {Http} from 'angular2/http';
+import {FORM_DIRECTIVES, NgFor} from 'angular2/common';
 
-import {Title} from '../providers/title';
+import {Login} from '../login/login';
+import {Users} from '../providers/users';
+import {Auth} from '../providers/auth';
 
 @Component({
   selector: 'home',
-  directives: [ ...FORM_DIRECTIVES ],
-  providers: [ Title ],
+  directives: [ ...FORM_DIRECTIVES, NgFor, Login ],
+  providers: [ Users ],
   pipes: [ ],
   styles: [ require('./home.css') ],
   template: require('./home.html')
 })
 export class Home {
   listUsers: Object[];
+  current_token: string;
+  failXhr: string;
 
-  constructor(public title: Title, public http: Http) {  }
+  constructor(public users: Users, public auth: Auth) {}
 
   ngOnInit() {
-    console.log('hello Home');
+    console.log('HOME INIT');
 
-    this.http.get('http://localhost:8080/api/users').map(res => res.json()).subscribe(
-      list => {
-        this.listUsers = list;
-        console.log('nice');
-      },
-      (err) => console.log('FAIL', err)
+    this.auth.token$.subscribe(
+      data => this.current_token = data
+    );
+  }
+
+  retrieveUsers() {
+    this.users.getUsers().subscribe(
+      list => this.listUsers = list,
+      err => this.failXhr = err
     );
   }
 

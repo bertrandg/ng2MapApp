@@ -1,7 +1,6 @@
 
 
-# IDE config:
+# Atom config:
 
-
-
-itorconfig > Atom > Settings → Install → Search for editorconfig
+- Install package atom-typescript
+- Install package editorconfig
